@@ -101,13 +101,19 @@ def saveCheck():
                 mainWindow.destroy()
 
 def copy():
-    text.clipboard_clear()
-    sel = text.selection_get()
-    text.clipboard_append(sel)
-
+    try:
+        text.clipboard_clear()
+        sel = text.selection_get()
+        text.clipboard_append(sel)
+    except TclError:
+        return -1
+        
 def paste():
-    clip = text.clipboard_get()
-    text.insert(INSERT, clip)
+    try:
+        clip = text.clipboard_get()
+        text.insert(INSERT, clip)
+    except TclError:
+        return -1
 
 def cut():
     text.clipboard_clear()
