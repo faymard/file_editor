@@ -1,11 +1,19 @@
 #coding=UTF-8
 
-from Tkinter import *
-from tkMessageBox import *
-from tkFont import *
-from tkFileDialog import *
-from ScrolledText import *
-from ttk import Notebook
+if sys.version_info[0] < 3:
+    from Tkinter import *
+    from tkMessageBox import *
+    from tkFont import *
+    from tkFileDialog import *
+    from ScrolledText import *
+    from ttk import Notebook
+else:
+    from tkinter import *
+    from tkinter.messagebox import *
+    from tkinter.font import *
+    from tkinter.filedialog import *
+    from tkinter.scrolledtext import *
+    from tkinter.ttk import Notebook
 
 ABOUT = "Program created by Florian AYMARD\nhttps://github.io/flaymard\nI'm a beginner. Feel free to contribute, I'll appreciate it !"
 
