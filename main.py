@@ -107,7 +107,7 @@ def copy():
         text.clipboard_append(sel)
     except TclError:
         return -1
-        
+
 def paste():
     try:
         clip = text.clipboard_get()
@@ -116,10 +116,13 @@ def paste():
         return -1
 
 def cut():
-    text.clipboard_clear()
-    sel = text.selection_get()
-    text.clipboard_append(sel)
-    text.selection_clear()
+    try:
+        text.clipboard_clear()
+        sel = text.selection_get()
+        text.clipboard_append(sel)
+        text.selection_clear()
+    except TclError:
+        return -1
 
 def undo():
     text.edit_undo()
@@ -148,12 +151,10 @@ def changePrefs():
     fontFrame.pack(padx=10, pady=10, side=LEFT)
     fontFrame.place(rely=1.0, relx=0.0, x=10, y=-10, anchor=SW)
 
-    scrollbarFont = Scrollbar(fontFrame, orient=VERTICAL)
-    fontList = Listbox(fontFrame,yscrollcommand=scrollbarFont.set)
-
-    scrollbarFont.config(command=fontList.yview)
-    fontList.pack(side=LEFT, fill=BOTH)
-    scrollbarFont.pack(side=RIGHT, fill=Y)
+    sel_font = StringVar()
+    sel_font.set(font.actual()["family"])
+    fontList = OptionMenu(fontFrame, sel_font, *fonts_list)
+    fontList.pack()
 
     buttonFrame = Frame(textFrame, borderwidth=2, relief=GROOVE)
     buttonFrame.pack(side=BOTTOM, padx=10, pady=10)
@@ -169,12 +170,6 @@ def changePrefs():
     #adding it to the notebook as a new tab
     prefsBook.add(textFrame, text="Font")
     prefsBook.pack(fill=BOTH, expand=1)
-
-
-    for item in reversed(fonts_list):
-        fontList.insert(0, item)
-
-    prefsEdit.mainloop()
 
 def setFont():
     newFont = fontList.get(ACTIVE)
